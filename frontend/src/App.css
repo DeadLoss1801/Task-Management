@@ -1,0 +1,39 @@
+.App {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.task-list li.completed {
+  background-color: #e0ffe0;
+}
+
+.task-list li span {
+  flex-grow: 1;
+}
+
+.task-list li button {
+  margin-left: 5px;
+  cursor: pointer;
+}
