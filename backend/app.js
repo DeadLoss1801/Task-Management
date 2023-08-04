@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-app.use(cors);
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 app.use(express.json());
 
 const mongoose = require("mongoose");
@@ -16,9 +21,9 @@ mongoose
   .then(() => console.log("DB connection successful!"));
 
 const router = require("./router");
-console.log("jsi");
+
 app.use("/", router);
 
 app.listen(8000, () => {
-  console.log("http://localhost:8000/");
+  console.log("http://localhost:8080/");
 });

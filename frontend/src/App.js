@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 function App() {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: "Buy groceries", completed: false },
-    { id: 2, title: "Walk the dog", completed: true },
-    // Add more tasks here as needed
-  ]);
+  const [tasks, setTasks] = useState([]);
 
   const [newTask, setNewTask] = useState({ title: "", completed: false });
 
@@ -15,33 +11,44 @@ function App() {
     setNewTask({ ...newTask, [name]: value });
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (newTask.title.trim() === "") return;
+    await axios.post("http://localhost:8000/", {
+      title: newTask.title,
+      completed: newTask.completed,
+    });
     setTasks([...tasks, { ...newTask, id: Date.now() }]);
     setNewTask({ title: "", completed: false });
   };
 
-  const handleToggleCompletion = (taskId) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
+  const handleToggleCompletion = async (taskId) => {
+    console.log(taskId);
+    const updatedTasks = tasks.filter((task) => {
+      if (task._id === taskId) return task;
+    });
+    console.log(updatedTasks);
+    await axios.patch(`http://localhost:8000/${taskId}`, {
+      completed: !updatedTasks[0].completed,
+    });
+    setTasks([...tasks]);
   };
 
-  const handleDeleteTask = (taskId) => {
-    const updatedTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(updatedTasks);
+  const handleDeleteTask = async (taskId) => {
+    console.log(taskId);
+    await axios.delete(`http://localhost:8000/${taskId}`);
+    setTasks([...tasks]);
   };
 
   const getTasks = async () => {
-    const res = axios.get("http://localhost:8000/").then((res) => res);
-    console.log(res);
+    console.log("sks");
+    const res = await axios.get("http://localhost:8000/");
+    const data = res.data;
+    setTasks(data);
   };
-
   useEffect(() => {
-    console.log("sk");
+    console.log(tasks);
     getTasks();
-  }, []);
+  }, [tasks]);
 
   return (
     <div className="App">
@@ -58,13 +65,13 @@ function App() {
       </div>
       <ul className="task-list">
         {tasks.map((task) => (
-          <li key={task.id} className={task.completed ? "completed" : ""}>
+          <li key={task._id} className={task.completed ? "completed" : ""}>
             <span>{task.title}</span>
             <div>
-              <button onClick={() => handleToggleCompletion(task.id)}>
+              <button onClick={() => handleToggleCompletion(task._id)}>
                 {task.completed ? "Undo" : "Done"}
               </button>
-              <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+              <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
             </div>
           </li>
         ))}
