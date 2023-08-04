@@ -12,7 +12,7 @@ function App() {
 
   const handleAddTask = async () => {
     if (newTask.title.trim() === "") return;
-    await axios.post("http://localhost:8000/", {
+    await axios.post("https://task-gimg.onrender.com/", {
       title: newTask.title,
       completed: newTask.completed,
     });
@@ -26,7 +26,7 @@ function App() {
       if (task._id === taskId) return task;
     });
     console.log(updatedTasks);
-    await axios.patch(`http://localhost:8000/${taskId}`, {
+    await axios.patch(`https://task-gimg.onrender.com/${taskId}`, {
       completed: !updatedTasks[0].completed,
     });
     setTasks([...tasks]);
@@ -34,13 +34,13 @@ function App() {
 
   const handleDeleteTask = async (taskId) => {
     console.log(taskId);
-    await axios.delete(`http://localhost:8000/${taskId}`);
+    await axios.delete(`https://task-gimg.onrender.com/${taskId}`);
     setTasks([...tasks]);
   };
 
   const getTasks = async () => {
     console.log("sks");
-    const res = await axios.get("http://localhost:8000/");
+    const res = await axios.get("https://task-gimg.onrender.com/");
     const data = res.data;
     setTasks(data);
   };
