@@ -3,7 +3,6 @@ import "./App.css";
 import axios from "axios";
 function App() {
   const [tasks, setTasks] = useState([]);
-
   const [newTask, setNewTask] = useState({ title: "", completed: false });
 
   const handleInputChange = (event) => {
@@ -45,6 +44,7 @@ function App() {
     const data = res.data;
     setTasks(data);
   };
+
   useEffect(() => {
     console.log(tasks);
     getTasks();
